@@ -1420,6 +1420,12 @@ public class ImsManager {
             }
         }
 
+        int subId = getSubId();
+        if (!SubscriptionManager.from(mContext).isActiveSubId(subId)) {
+            log("updateImsServiceConfigForSlot: subId not active: " + subId);
+            return;
+        }
+
         if (!mConfigUpdated || force) {
             try {
                 // Note: currently the order of updates is set to produce different order of
@@ -1534,7 +1540,8 @@ public class ImsManager {
         log("updateWfcFeatureAndProvisionedValues: available = " + available
                 + ", enabled = " + enabled
                 + ", mode = " + mode
-                + ", roaming = " + roaming);
+                + ", roaming = " + roaming
+                + ", isNetworkRoaming = " + isNetworkRoaming);
 
         if (isFeatureOn) {
             request.addCapabilitiesToEnableForTech(
